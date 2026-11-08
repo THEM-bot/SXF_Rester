@@ -1,0 +1,50 @@
+name: pm-flow
+version: 0.1.0
+summary: 产品经理全流程工作台——需求立项、PRD、模块拆分、Demo、推研效通、评审台账、验收，附 Mermaid 进度图
+description: |
+  用一条命令管住一个需求从收料到验收的全过程。状态机落盘在 project.json，
+  任何关于"到哪一步了/下一步干嘛"的问题都先跑 status 看图，不靠记忆。
+  覆盖大需求 11 段流程与小需求 9 段流程，内置写作指引、问题台账、
+  docx 读写、Word 发布与研效通编号回填。
+entrypoint: SKILL.md
+tools:
+  - name: pmw
+    kind: node-cli
+    path: tools/pmw.mjs
+    description: pm-flow 的唯一 CLI 入口
+    usage: node tools/pmw.mjs <command> [args] [--dir <项目目录>]
+    commands:
+      - init
+      - status
+      - flow
+      - today
+      - next
+      - advance
+      - goto
+      - back
+      - block
+      - unblock
+      - review
+      - add-module
+      - add-sub
+      - split
+      - sync-docs
+      - check
+      - digest
+      - doc
+      - publish
+      - pushed
+      - ls
+      - history
+      - where
+      - guide
+      - help
+dependencies:
+  runtime: node
+  minVersion: "18"
+  packages: []
+  external:
+    - name: yanxiaotong-skills
+      optional: true
+      purpose: 推送需求池（requirement-api.mjs create-from-doc）与任务拆分
+      note: 开放 API 不支持设置上级需求、不支持上传附件，需在 Web 手工补

@@ -1,0 +1,16 @@
+# dsh-pm-flow bundle patch：一行宿主插件 + 一个 Web 客户端半。
+# 宿主半注册五个工具（pm_flow / pm_role / sh / browser / obsidian；研效通走 pmw yxt 子命令，不单独注册工具）、
+#   七个技能（pm-flow 主技能 + pm-domain 业务域档案 + 六个角色），
+#   /pmw 命令，以及 /pm-flow/state、/pm-flow/graph 两条数据路由；
+# 客户端半在左侧活动栏加一个「需求进度看板」图标，并在模型名左边挂一个 Rester 标记。
+# 知识库（Obsidian）的 API Key 走环境变量 OBSIDIAN_API_KEY，不写在这里。
+# 研效通那套 CLI 不进 bundle（是另一份技能包），运行时用 pmw yxt doctor 自动探测其位置，
+#   也可用 YXT_ROOT 环境变量或 ~/.pm-flow/yxt.json 指定。
+- insert:
+    - id: pm-flow
+      name: dsh-pm-flow
+      config:
+        # 装需求的父目录：每个子目录 = 一个需求工作区（状态就落在那里面）
+        root: 'D:\Users\SXF-Admin\Desktop\文档'
+        enableSkill: true
+        enableCommand: true

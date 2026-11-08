@@ -1,0 +1,58 @@
+{
+  "name": "dsh-pm-flow",
+  "version": "0.20.0",
+  "description": "一个需求 = 一个工作区目录，状态与材料平铺；含反思循环、改路线、可写看板与改动来源追踪，六个角色 agent 叠加业务域档案（深信服供应链与财经），对接研效通六子包与 Obsidian 知识库",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib/",
+    "tools/",
+    "vendor/",
+    "SKILL.md",
+    "agents/",
+    "cordis.patch.yml",
+    "README.md"
+  ],
+  "keywords": [
+    "deepseek-harness",
+    "dsh",
+    "dsh-plugin",
+    "product-manager",
+    "workflow",
+    "prd",
+    "requirements",
+    "mermaid",
+    "archify",
+    "obsidian",
+    "dataview",
+    "knowledge-base"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web"
+    }
+  },
+  "peerDependencies": {
+    "@deepseek-ai/dsh-tools": "*"
+  },
+  "peerDependenciesMeta": {
+    "@deepseek-ai/dsh-tools": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "docx": "^9.15.2"
+  }
+}
