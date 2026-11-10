@@ -1,0 +1,22 @@
+{
+  "code": 200,
+  "message": "操作成功",
+  "success": true,
+  "data": {
+    "version": "2026-09-16T12:00:00+08:00",
+    "problemTypes": [
+      { "id": "online_defect", "name": "线上缺陷", "enabled": true }
+    ],
+    "featureTeams": [],
+    "businessDomains": [],
+    "appServices": [],
+    "tokenUser": {
+      "userId": "200",
+      "name": "李四",
+      "employeeId": "54321"
+    },
+    "defaults": {
+      "problemTypeId": "online_defect"
+    }
+  }
+}

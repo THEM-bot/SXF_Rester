@@ -1,0 +1,8 @@
+{
+  "id": "d2",
+  "track": "content_refine",
+  "source_excerpt": "支付回调超时，生产环境偶发，等待超过 30 秒仍未收到回调",
+  "expected_title_max_len": 40,
+  "expected_title_contains": ["支付", "超时"],
+  "expected_description_sections": ["现象", "环境"]
+}

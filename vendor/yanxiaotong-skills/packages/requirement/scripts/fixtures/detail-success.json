@@ -1,0 +1,11 @@
+{
+  "success": true,
+  "code": 200,
+  "data": {
+    "requirementId": 1001,
+    "requirementNo": "REQ-TEST-001",
+    "title": "测试需求",
+    "status": "草稿",
+    "requirementLevel": "Story"
+  }
+}

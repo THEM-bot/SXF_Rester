@@ -1,0 +1,9 @@
+{
+  "success": true,
+  "code": 200,
+  "message": "创建成功",
+  "data": {
+    "id": 1001,
+    "originalNo": "OR-20260714-0001"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "code": 200,
+  "message": "追加成功",
+  "success": true,
+  "data": {
+    "bodyHtml": "<p>已与财务对齐预算口径</p>",
+    "operatorId": "47420",
+    "operatorName": "张三（47420）",
+    "progressTime": "2026-08-04 14:30:00"
+  }
+}

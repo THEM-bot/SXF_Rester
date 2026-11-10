@@ -1,0 +1,10 @@
+{
+  "success": true,
+  "code": 200,
+  "message": "ok",
+  "data": {
+    "defectId": "2001",
+    "defectNo": "TD-20260704-0001",
+    "mappingKey": "TD-20260704-0001"
+  }
+}

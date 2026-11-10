@@ -1,0 +1,12 @@
+{
+  "name": "yanxiaotong-skills",
+  "private": true,
+  "description": "研效通技能聚合包（维护用 · 非 npm 发布）",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "self-check": "node scripts/self-check.js",
+    "check": "node scripts/self-check.js"
+  }
+}

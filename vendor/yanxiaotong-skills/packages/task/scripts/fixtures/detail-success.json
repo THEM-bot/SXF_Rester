@@ -1,0 +1,14 @@
+{
+  "code": 200,
+  "success": true,
+  "data": {
+    "taskId": "109",
+    "taskNo": "TASK-20260709-001",
+    "title": "示例任务",
+    "status": "已认领",
+    "taskPhase": "开发阶段",
+    "taskCategory": "开发编码",
+    "requirementNo": "REQ-20260703-0001",
+    "requirementTitle": "示例需求"
+  }
+}

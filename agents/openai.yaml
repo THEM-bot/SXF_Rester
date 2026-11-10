@@ -47,4 +47,5 @@ dependencies:
     - name: yanxiaotong-skills
       optional: true
       purpose: 推送需求池（requirement-api.mjs create-from-doc）与任务拆分
+      bundledPath: vendor/yanxiaotong-skills
       note: 开放 API 不支持设置上级需求、不支持上传附件，需在 Web 手工补

@@ -1,0 +1,8 @@
+name: yanxiaotong-task
+version: "0.2.0"
+entry: PACK.md
+requires: []
+kind: tool
+agent_roots:
+  - .cursor
+  - .claude

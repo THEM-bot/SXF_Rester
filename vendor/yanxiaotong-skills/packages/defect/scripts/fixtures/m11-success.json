@@ -1,0 +1,9 @@
+{
+  "success": true,
+  "code": 200,
+  "data": {
+    "status": ["新建", "处理中"],
+    "severity": ["C类（一般）"],
+    "closeTypes": [{ "code": "resolved", "label": "解决关闭" }]
+  }
+}

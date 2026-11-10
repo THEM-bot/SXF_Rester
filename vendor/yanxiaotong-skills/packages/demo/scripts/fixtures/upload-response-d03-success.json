@@ -1,0 +1,10 @@
+{
+  "success": true,
+  "data": {
+    "demoId": "3001",
+    "demoCode": "DEMO-E2E-001",
+    "name": "E2E烟测",
+    "accessUrl": "https://demo.example.com/e2e",
+    "publishVersionId": "4001"
+  }
+}

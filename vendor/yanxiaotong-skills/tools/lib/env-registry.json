@@ -1,0 +1,41 @@
+{
+  "DEFAULT_ENV_SLUG": "prod",
+  "envs": {
+    "local": {
+      "env_slug": "local",
+      "env_label": "本地",
+      "base_url": "http://localhost:19999/efficiency-hub",
+      "web_origin": "http://localhost:5173",
+      "requirement_api": "ready",
+      "original_requirement_api": "ready",
+      "task_api": "ready",
+      "defect_api": "ready",
+      "org_todo_api": "ready",
+      "problem_ticket_api": "ready"
+    },
+    "uat": {
+      "env_slug": "uat",
+      "env_label": "UAT",
+      "base_url": "http://yanxiaotong-open-uat.sangfor.com:19980/efficiency-hub",
+      "web_origin": "https://yanxiaotong-uat.atrust.sangfor.com",
+      "requirement_api": "ready",
+      "original_requirement_api": "ready",
+      "task_api": "ready",
+      "defect_api": "ready",
+      "org_todo_api": "ready",
+      "problem_ticket_api": "ready"
+    },
+    "prod": {
+      "env_slug": "prod",
+      "env_label": "生产",
+      "base_url": "http://yanxiaotong-open.sangfor.com:19980/efficiency-hub",
+      "web_origin": "https://yanxiaotong.atrust.sangfor.com",
+      "requirement_api": "ready",
+      "original_requirement_api": "ready",
+      "task_api": "ready",
+      "defect_api": "ready",
+      "org_todo_api": "ready",
+      "problem_ticket_api": "ready"
+    }
+  }
+}

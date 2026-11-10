@@ -28,7 +28,7 @@ export const PROJECT_STAGES = [
   {
     key: 'P1_INTAKE',
     icon: '①',
-    name: '收料',
+    name: '基础材料收集',
     goal: '把会议纪要 / 业务文档 / demo / 立项报告 收齐，判断大需求还是小需求',
     do: '让用户把原件放进 原材料/，用 pmw digest 转成 Markdown；缺什么列清',
     exit: [],
@@ -188,7 +188,7 @@ export const REQ_STAGES = [
   {
     key: 'S1_INTAKE',
     icon: '①',
-    name: '收料',
+    name: '基础材料收集',
     goal: '收齐会议纪要（.docx）、业务文档、口头诉求，判断是小需求还是大需求',
     do: '原件放 原材料/，pmw digest 转 Markdown；如果其实是 0→1 重构，pmw init project 重开',
     exit: [],

@@ -1,0 +1,8 @@
+name: yanxiaotong-skill-sync
+version: "0.1.0"
+entry: PACK.md
+requires: []
+kind: tool
+agent_roots:
+  - .cursor
+  - .claude

@@ -1,0 +1,16 @@
+{
+  "success": true,
+  "code": 200,
+  "data": {
+    "id": "1001",
+    "originalNo": "OR-20260714-0001",
+    "title": "开放 API 联调示例",
+    "intakeStatus": "待受理",
+    "priority": "中",
+    "businessDomainName": "示例领域",
+    "proposer": "测试用户",
+    "requirementAcceptancePerson": "验收用户",
+    "expectedDeliveryDate": "2026-12-31",
+    "submitChannel": "企微"
+  }
+}

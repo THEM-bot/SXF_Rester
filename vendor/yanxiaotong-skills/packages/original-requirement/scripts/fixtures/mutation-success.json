@@ -1,0 +1,10 @@
+{
+  "success": true,
+  "code": 200,
+  "message": "更新成功",
+  "data": {
+    "id": 1001,
+    "originalNo": "OR-20260714-0001",
+    "updatedAt": "2026-07-14 10:00:00"
+  }
+}

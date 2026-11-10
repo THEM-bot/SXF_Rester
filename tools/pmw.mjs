@@ -13,6 +13,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
+import { readSettings, saveSettings, setupComplete, settingsFile } from './lib/settings.mjs';
 import {
   SCHEMA,
   PROJECT_STAGES,
@@ -159,6 +160,7 @@ function resolveTargetDirForInit() {
 function projectsRoot() {
   if (F.root) return path.resolve(F.root);
   if (process.env.PMF_ROOT) return path.resolve(process.env.PMF_ROOT);
+  if (readSettings().root) return path.resolve(readSettings().root);
   // 包目录本身如果就是一个需求工作区（install 时装在需求目录里），就用它
   if (detectKind(ROOT)) return ROOT;
   const local = path.join(ROOT, 'projects');
@@ -2473,6 +2475,7 @@ async function cmdNote() {
  *   3. 把它的英文报错翻成人话，并在 dry 模式下先给用户看 body。
  */
 async function cmdYxt() {
+  if (readSettings().yanxiaotong === false) fail('研效通未启用；请先在设置中启用。');
   const sub = argv._[1] || 'status';
   const rootMod = await import(new URL('../lib/yxt/root.js', import.meta.url).href);
   const cli = await import(new URL('../lib/yxt/cli.js', import.meta.url).href);
@@ -2579,6 +2582,36 @@ async function cmdYxt() {
     if (d.status) say(`  ${C.dim('状态')}  ${d.status}`);
     if (d.requirementLevel) say(`  ${C.dim('层级')}  ${d.requirementLevel}`);
     jsonOut.result = { action: 'req', data: d };
+    return;
+  }
+
+  /* ---------- story：只读检查故事卡 / 迭代目录 ---------- */
+  if (sub === 'story') {
+    const act = argv._[2] || 'parse';
+    if (!['parse', 'scan'].includes(act)) fail('用法：pmw yxt story <parse|scan> --path <文件或目录>');
+    const input = need(F.path, '请用 --path 指定故事卡或迭代目录');
+    const r = ops.inspectStories(root, path.resolve(String(input)), act === 'scan');
+    if (!r.ok) fail(`✗ ${r.error}`);
+    const data = r.data;
+    const items = act === 'scan' ? data.items : [data];
+    say(act === 'scan' ? `扫描到 ${data.total} 条故事卡，可创建 ${data.creatable} 条` : '故事卡解析');
+    for (const item of items || []) {
+      const p = item.parsed || {};
+      say(`  ${p.title || item.docPath || item.inputPath || '未识别'}  优先级：${p.priority || '未识别'}  故事点：${p.storyPoint ?? '未识别'}`);
+      for (const warning of item.warnings || []) say(`    ${warning.blocked ? '✗' : '!'} ${warning.message || warning.type}`);
+      if (item.error) say(`    ✗ ${item.error}`);
+    }
+    for (const warning of data.batchWarnings || []) say(`  ! ${warning.type}: ${warning.title || ''}`);
+    jsonOut.result = { action: `story.${act}`, data };
+    return;
+  }
+
+  if (sub === 'or' && (argv._[2] === 'detail' || argv._[2] === 'read')) {
+    const id = need(argv._[3] || F.id, '用法：pmw yxt or detail <OR-xxx>');
+    const r = ops.detailOriginalRequirement(root, id);
+    if (!r.ok) fail(`✗ ${r.error}`);
+    say(JSON.stringify(r.data, null, 2));
+    jsonOut.result = { action: 'or.detail', data: r.data };
     return;
   }
 
@@ -2907,7 +2940,17 @@ async function cmdYxt() {
 
   /* ---------- problem：问题单 ---------- */
   if (sub === 'problem') {
-    const res = ops.createProblemTicket(root, {
+    if (F.prepared) {
+      if (F.dry || F.prepare) fail('--prepared 不能与 --dry 或 --prepare 同时使用');
+      const prepared = path.resolve(String(need(F.prepared, '请提供已确认的确认稿路径')));
+      if (!fs.existsSync(prepared) || !fs.statSync(prepared).isFile()) fail('确认稿文件不存在');
+      const res = ops.submitPreparedProblemTicket(root, prepared);
+      if (!res.ok) fail(`✗ ${res.error}`);
+      say(`${C.g('✓ 建好了')} ${res.problemNo || res.problemId}`);
+      jsonOut.result = { action: 'problem.new', problemNo: res.problemNo, problemId: res.problemId, raw: res.raw };
+      return;
+    }
+    const input = {
       title: F.title || argv._[2],
       description: F.desc,
       submitterName: F.submitter,
@@ -2917,7 +2960,19 @@ async function cmdYxt() {
       appOrService: F.app,
       dry: Boolean(F.dry),
       defaults: def,
-    });
+    };
+    if (F.prepare) {
+      const out = path.resolve(String(need(F.out, '请用 --out 指定确认稿文件')));
+      if (fs.existsSync(out)) fail('确认稿文件已存在，请选择新路径');
+      const res = ops.prepareProblemTicket(root, input, out);
+      if (!res.ok) fail(`✗ ${res.error}`);
+      say(res.text.trim());
+      say(`确认稿：${out}`);
+      jsonOut.result = { action: 'problem.prepare', prepared: out, text: res.text };
+      return;
+    }
+    if (!F.dry) fail('请先使用 --prepare --out <确认稿.json>，确认后使用 --prepared <确认稿.json> 提交');
+    const res = ops.createProblemTicket(root, input);
     if (!res.ok) fail(`✗ ${res.error}`);
     if (res.dry) {
       say(`${C.y('dry')} 这份 body 会提交到问题单创建：`);
@@ -2925,9 +2980,6 @@ async function cmdYxt() {
       jsonOut.result = { action: 'problem.new', dry: true, body: res.body };
       return;
     }
-    say(`${C.g('✓ 建好了')} ${res.problemNo || res.problemId}`);
-    jsonOut.result = { action: 'problem.new', problemNo: res.problemNo, problemId: res.problemId };
-    return;
   }
 
   /* ---------- demo：打包 + 上传 ---------- */
@@ -2989,7 +3041,7 @@ async function cmdYxt() {
     fail('用法：pmw yxt demo <push|pack> [--zip <zip>] [--mode d03|d04] [--name "名称"]');
   }
 
-  fail(`✗ 不认识的子命令 ${sub}。可用：doctor / config / meta / req / status / task / defect / or / todo / problem / demo`);
+  fail(`✗ 不认识的子命令 ${sub}。可用：doctor / config / meta / req / story / status / task / defect / or / todo / problem / demo`);
 }
 
 function help() {
@@ -3060,9 +3112,11 @@ function help() {
   P('pmw yxt demo push [--mode d03|d04]', 'demo 打包上传，回 accessUrl');
   P('pmw yxt defect new --title "..."', 'UAT 不过就建缺陷');
   P('pmw yxt defect status TD-xxx --to "修复待回归"', '推缺陷状态');
+  P('pmw yxt or detail <OR-xxx>', '读取原始需求详情');
+  P('pmw yxt story parse|scan --path <路径>', '检查故事卡或扫描迭代目录（不提交）');
   P('pmw yxt or new|link', '原始需求：建一条，或记下已有编号');
   P('pmw yxt todo new --desc "..." --owner 工号', '组织待办');
-  P('pmw yxt problem --title "..." --submitter 姓名', '问题单');
+  P('pmw yxt problem --prepare --out <文件> ...', '生成问题单确认稿；确认后用 --prepared <文件> 提交');
   P('pmw yxt meta task m10 --pick phase', '查元数据（阶段/类别/业务领域/严重程度）');
   P('pmw yxt req REQ-xxx', '查一条需求（拿平台 id）');
   say(`\n${C.b('表格与 PDF')}`);
@@ -4372,7 +4426,35 @@ function cmdAck() {
   jsonOut.result = { action: 'ack', acked: before.total, byUser: before.byUser };
 }
 
+function cmdSetup() {
+  const sub = argv._[1] || 'status';
+  if (sub === 'status') {
+    const settings = readSettings();
+    jsonOut.result = { settings, complete: setupComplete(settings), file: settingsFile() };
+    say(setupComplete(settings) ? '本地配置已完成。' : '本地配置尚未完成，请配置需求目录和集成选项。');
+    return;
+  }
+  if (sub !== 'set') fail('用法：setup status 或 setup set --workspace <目录> --yxt on|off --obsidian on|off');
+  const patch = {};
+  if (F.workspace !== undefined) {
+    if (typeof F.workspace !== 'string' || !path.isAbsolute(F.workspace)) fail('需求目录必须是已存在的绝对路径。');
+    const dir = path.resolve(F.workspace);
+    if (!fs.existsSync(dir) || !fs.statSync(dir).isDirectory()) fail('需求目录不存在，请先创建或选择已有目录。');
+    patch.root = dir;
+  }
+  for (const [flag, key] of [['yxt', 'yanxiaotong'], ['obsidian', 'obsidian']]) {
+    if (F[flag] === undefined) continue;
+    if (!['on', 'off'].includes(F[flag])) fail(`${flag} 必须为 on 或 off。`);
+    patch[key] = F[flag] === 'on';
+  }
+  if (!Object.keys(patch).length) fail('请提供要修改的配置。');
+  const settings = saveSettings(patch);
+  jsonOut.result = { settings, complete: setupComplete(settings), file: settingsFile() };
+  say('本地配置已保存。');
+}
+
 const table = {
+  setup: cmdSetup,
   init: cmdInit,
   status: cmdStatus,
   today: cmdToday,

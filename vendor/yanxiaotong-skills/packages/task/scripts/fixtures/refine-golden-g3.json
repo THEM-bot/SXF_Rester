@@ -1,0 +1,8 @@
+{
+  "id": "g3",
+  "track": "content_refine",
+  "source_excerpt": "登录按钮点击无响应，Chrome 下复现：打开登录页后连续点击三次仍无跳转",
+  "expected_title_max_len": 40,
+  "expected_title_contains": ["登录", "无响应"],
+  "expected_description_sections": ["现象", "复现"]
+}

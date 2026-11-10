@@ -1,0 +1,14 @@
+{
+  "success": true,
+  "code": 200,
+  "message": "操作成功",
+  "data": {
+    "records": [
+      { "id": "1", "name": "领域A" },
+      { "id": "2", "name": "领域B" }
+    ],
+    "total": 2,
+    "current": 1,
+    "size": 20
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "code": 200,
+  "success": true,
+  "data": {
+    "taskPhase": ["开发阶段", "测试阶段"],
+    "status": ["待认领", "已认领"],
+    "phaseCategoryMap": {
+      "开发阶段": ["开发编码"]
+    }
+  }
+}

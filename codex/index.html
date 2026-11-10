@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>需求进度看板</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <header>
+    <div><span class="eyebrow">PM FLOW</span><h1>需求进度看板</h1></div>
+    <button id="refresh" type="button" aria-label="刷新看板" title="刷新看板">↻</button>
+  </header>
+  <main>
+    <section id="overview" aria-labelledby="list-title">
+      <div class="section-heading"><h2 id="list-title">在跟进</h2><span id="count" class="count">0</span></div>
+      <details id="create-details" class="create-details">
+        <summary>＋ 新增需求</summary>
+        <form id="create-form" class="add-form">
+          <label>需求名称<input name="title" type="text" maxlength="200" required></label>
+          <fieldset>
+            <legend>需求类型</legend>
+            <label class="choice"><input type="radio" name="kind" value="req" required>小需求 / 现有系统迭代</label>
+            <label class="choice"><input type="radio" name="kind" value="project">大需求 / 需要立项</label>
+          </fieldset>
+          <div id="create-notice" role="status" aria-live="polite"></div>
+          <button class="secondary" type="submit">创建需求</button>
+        </form>
+      </details>
+      <div id="notice" role="status" aria-live="polite"></div>
+      <div id="projects" class="projects"></div>
+    </section>
+    <section id="detail" hidden></section>
+  </main>
+</body>
+</html>

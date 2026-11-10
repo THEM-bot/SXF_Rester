@@ -1,0 +1,17 @@
+{
+  "code": 200,
+  "success": true,
+  "data": {
+    "records": [
+      {
+        "taskId": "109",
+        "taskNo": "TASK-20260709-001",
+        "title": "示例",
+        "status": "已认领",
+        "taskPhase": "开发阶段"
+      }
+    ],
+    "total": 1,
+    "pages": 1
+  }
+}

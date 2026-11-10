@@ -4,3 +4,8 @@ projects/
 .yxttest/
 dist/
 *.log
+.env
+.env.*
+settings.json
+*.pem
+*.key

@@ -7,6 +7,21 @@ description: 产品经理全流程工作台。用一条命令管住一个需求�
 
 **这个 skill 只做两件事：告诉你现在该做什么，和帮你把产物写对。** 所有状态由 `tools/pmw.mjs` 落盘管理，不靠记忆。
 
+## 首次使用：Rester 配置引导
+
+处理第一个需求前先调用 `pm_flow` 的 `setup status`。若 `complete` 为 false，
+用自然语言询问用户：已有的需求工作区父目录、是否启用研效通、是否启用 Obsidian。
+尊重已配置的选项，只询问缺失项；允许暂不启用集成。用户提供后调用
+`pm_flow` 的 `setup set`，参数依次使用 `--workspace <绝对目录>`、
+`--yxt on|off`、`--obsidian on|off`。目录需要事先存在；允许后续修改设置。
+配置只保存在当前用户的 `~/.pm-flow/settings.json`，不写进插件仓库。
+
+启用研效通时，提醒用户选择环境并通过研效通既有登录方式配置本机凭据；
+启用 Obsidian 时，引导用户打开 Obsidian 的 Local REST API 并在宿主环境配置
+`OBSIDIAN_API_KEY`。不要让用户在聊天中粘贴密钥，也不要将凭据写入项目或仓库。
+选项关闭时不调用对应集成；本地需求和文档工作仍可继续。首次配置后按需要
+检查连通性，不要把配置完成误称为认证成功。
+
 ## 零、先确认在哪干活
 
 ```bash
@@ -36,7 +51,7 @@ node "$ROOT/tools/pmw.mjs" status --dir "<项目目录>"
 
 ## 二、两条主线，别走错
 
-**一个需求 = 一个工作区目录**。用户会在 `D:\Users\SXF-Admin\Desktop\文档\` 下自己建目录、把材料放进去，
+**一个需求 = 一个工作区目录**。用户会在配置的需求父目录下自己建目录、把材料放进去，
 然后说「这个需求开始走流程」。这时用 **`init --here`** 就地在那个目录落状态，**不要另建子目录**。
 
 | 用户说的事 | 走哪条 |
@@ -45,7 +60,7 @@ node "$ROOT/tools/pmw.mjs" status --dir "<项目目录>"
 | 描述一样新东西该长什么样、新建/重构系统 | **大需求** |
 
 ```bash
-pmw init --here --kind project --title "预算系统重构" --dir "D:\Users\SXF-Admin\Desktop\文档\预算系统改造需求"
+pmw init --here --kind project --title "业务系统重构" --dir "<需求工作区>"
 pmw init --here --kind req --title "导入模板加一列" --dir "<工作区>"
 ```
 
@@ -199,6 +214,9 @@ pmw taskflow                     # 只出本阶段任务链路图（--stage P4_M
 | `pmw yxt config --business-domain-id xxx --project-id yyy` | 存一次默认值，以后建需求不用再问四五个问题 |
 | `pmw yxt status` | 这个需求在平台上对到哪了（REQ / 任务推了几条 / demo 链接 / 缺陷） |
 | `pmw yxt req REQ-xxx` | 查一条需求，拿平台 id（建任务/缺陷都要它） |
+| `pmw yxt or detail OR-xxx` | 读取原始需求详情，作为故事卡的来源 |
+| `pmw yxt story parse --path <文件>` | 解析故事卡的优先级、故事点和预警，不提交 |
+| `pmw yxt story scan --path <迭代目录>` | 扫描迭代目录下的 `REQ-*` 子目录，不提交 |
 | `pmw yxt task push [--dry]` | **把给开发的活推成平台任务，挂在需求下** |
 | `pmw yxt task new --req REQ-xxx --title "..."` | 单条建任务 |
 | `pmw yxt demo push [--mode d03\|d04]` | demo 打包上传，回 accessUrl |
@@ -206,10 +224,17 @@ pmw taskflow                     # 只出本阶段任务链路图（--stage P4_M
 | `pmw yxt defect status TD-xxx --to "修复待回归"` | 推缺陷状态 |
 | `pmw yxt or new\|link` | 原始需求：建一条，或记下已有编号 |
 | `pmw yxt todo new --desc "..." --owner 工号` | 组织待办（领导交办、跨团队跟进） |
-| `pmw yxt problem --title "..." --submitter 姓名` | 问题单 |
+| `pmw yxt problem --prepare --out <确认稿.json> --title "..." --desc "..." --submitter 姓名` | 生成问题单确认稿，原样展示输出；用户确认后用 `pmw yxt problem --prepared <确认稿.json>` 提交同一文件 |
 | `pmw yxt meta task m10 --pick phase` | 查元数据（阶段 / 类别 / 业务领域 / 严重程度） |
 
 **所有写操作都先加 `--dry` 看一遍 body 再真发**。生产库不是沙箱，建错了要手工去删。
+
+### 需求治理：从原始需求到评审
+
+1. 读取原始需求和项目材料，记录来源；拆分可独立交付的故事卡，每条写明用户价值、业务规则和可验证的验收标准。故事点与优先级是待团队确认的建议，不要当成平台评分或团队容量结论。
+2. 对故事卡运行 `pmw yxt story parse --path <故事卡.md>`；迭代目录结构符合研效通约定时可用 `story scan`。展示故事点、优先级和全部预警；缺失或冲突须人工处理。解析成功不代表验收质量已通过。
+3. 根据定稿制作 Demo。发布需求时使用内置 `vendor/yanxiaotong-skills/packages/requirement/reference/phases/create-phase.md` 中的单条或批量流程：批量使用官方 `scan-iter` 和 `batch-create`，先展示文档、字段及预警，确认后执行，逐条核对结果并用 `pmw pushed` 回填成功编号。原始需求关联使用该包的 `originalRequirementId`，不要与父子需求关系混淆。
+4. Demo 上传、GitLab 推送、创建评审单、企微通知及纳入迭代分别检查实际工具与权限。内置研效通包未提供评审单和迭代管理接口，需在平台处理并记录结果；不要把本地评审台账当作平台评审单，也不要声称通知已发送。
 
 **知识库里有两个 Dataview 索引页**：`00-索引/需求总览`（所有在跟的需求按阶段排）和 `00-索引/工作台`（等谁 / 卡点 / 停滞 / 经验）。它们由查询实时算出来，**不要手工往里面加行** —— 加进去也会显示不出来，因为表格体是查询渲染的。要改就改数据（需求笔记的 frontmatter），不要改表格。
 
@@ -558,7 +583,7 @@ pmw brief --wait-days 1 --block-days 1 --stale-days 3   # 调阈值
 - 用户一段时间没提某个需求
 - 每天早上第一次接手时
 
-**看到超期不要只列出来**：挑最该催的那条，给出具体动作（「这条在肖美玲手上 3 天了，要不要我拟一句话发她」）。
+**看到超期不要只列出来**：挑最该催的那条，给出具体动作（「这条已等待负责人 3 天，要不要拟一句跟进消息」）。
 
 ### `lint` —— 一致性体检（治"口径对不上、规则没验收"）
 
@@ -682,7 +707,7 @@ flowchart LR
 状态和材料**平铺在同一个目录**里，不是藏在子目录里：
 
 ```
-D:\Users\SXF-Admin\Desktop\文档\配置切换需求\      ← 用户自己建的目录，名字随便
+<需求父目录>/配置切换需求/      ← 用户自己建的目录，名字随便
   project.json          状态机（阶段、评审、卡点、子需求、任务、研效通编号）
   会议纪要.docx          用户放的原始材料（放哪都行，可以有子文件夹）
   原材料/               digest 转出来的 md
@@ -694,7 +719,7 @@ D:\Users\SXF-Admin\Desktop\文档\配置切换需求\      ← 用户自己建�
   产物/                 publish 出的 Word
 ```
 
-- 父目录由插件配置 `root` 决定（当前 `D:\Users\SXF-Admin\Desktop\文档`）。`pmw board` 在这里面找所有在跟的需求。
+- 父目录由用户的本地配置或插件 `root` 决定。`pmw board` 在这里面找所有在跟的需求。
 - `已完成`、`归档`、`其他资料`、`PM_skill` 这几个目录会被跳过，不当成需求。
 
 ---
@@ -703,7 +728,7 @@ D:\Users\SXF-Admin\Desktop\文档\配置切换需求\      ← 用户自己建�
 
 ```bash
 R="D:\...\pm-flow\tools\pmw.mjs"
-W="D:\Users\SXF-Admin\Desktop\文档\预算系统改造需求"     # 用户已建好、材料已放好
+W="<需求工作区绝对路径>"     # 用户已建好、材料已放好
 node $R digest --dir "$W"                  # 递归扫工作区，docx 全转成 原材料/*.md
 node $R init --here --kind project --title "预算系统重构" --dir "$W"
 node $R guide P2_DISCOVERY

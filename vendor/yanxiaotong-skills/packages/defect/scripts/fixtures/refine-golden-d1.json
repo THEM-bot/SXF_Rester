@@ -1,0 +1,8 @@
+{
+  "id": "d1",
+  "track": "content_refine",
+  "source_excerpt": "列表页在 Chrome 下样式错乱，复现：打开需求池筛选后滚动到底部",
+  "expected_title_max_len": 40,
+  "expected_title_contains": ["样式"],
+  "expected_description_sections": ["现象", "复现"]
+}

@@ -1,0 +1,8 @@
+name: yanxiaotong-skills
+version: "1.0.0"
+entry: SKILL.md
+requires: []
+kind: tool
+agent_roots:
+  - .cursor
+  - .claude

@@ -1,0 +1,19 @@
+{
+  "success": true,
+  "code": 200,
+  "data": {
+    "records": [
+      {
+        "id": "1001",
+        "originalNo": "OR-20260714-0001",
+        "title": "示例",
+        "intakeStatus": "待受理",
+        "businessDomainName": "示例领域"
+      }
+    ],
+    "total": 1,
+    "current": 1,
+    "size": 5,
+    "pages": 1
+  }
+}

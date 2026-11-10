@@ -1,0 +1,20 @@
+{
+  "code": 200,
+  "message": "操作成功",
+  "success": true,
+  "data": {
+    "records": [
+      {
+        "orgTodoNo": "OT-20260804-0001",
+        "orgTodoId": "10001",
+        "title": "跟进 Q3 预算对齐",
+        "status": "PENDING",
+        "statusLabel": "待处理",
+        "owners": [{ "employeeId": "47420", "name": "张三" }]
+      }
+    ],
+    "total": 1,
+    "size": 5,
+    "current": 1
+  }
+}

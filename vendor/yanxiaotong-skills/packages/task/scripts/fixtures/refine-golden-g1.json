@@ -1,0 +1,8 @@
+{
+  "id": "g1",
+  "track": "content_refine",
+  "source_excerpt": "REQ-0051 开放 API 任务 CRUD：须实现创建、查询、更新、取消四项 P0 接口及 M10 元数据点选…",
+  "expected_title_max_len": 40,
+  "expected_title_contains": ["任务", "CRUD"],
+  "expected_description_sections": ["业务目标", "工作范围"]
+}

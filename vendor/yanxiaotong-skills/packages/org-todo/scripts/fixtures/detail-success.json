@@ -1,0 +1,23 @@
+{
+  "code": 200,
+  "message": "操作成功",
+  "success": true,
+  "data": {
+    "orgTodoNo": "OT-20260804-0001",
+    "orgTodoId": "10001",
+    "title": "跟进 Q3 预算对齐",
+    "status": "IN_PROGRESS",
+    "statusLabel": "处理中",
+    "proposedBy": "张三47420",
+    "businessDomainName": "效能平台",
+    "projectNames": ["效能平台项目"],
+    "owners": [{ "employeeId": "47420", "name": "张三" }],
+    "proposedAt": "2026-08-04 10:00:00",
+    "plannedCloseAt": "2026-09-30 00:00:00",
+    "actualCloseAt": null,
+    "updatedAt": "2026-08-04 12:00:00",
+    "descriptionHtml": "<p>跟进 Q3 预算对齐</p>",
+    "progressHtml": "<p>已与财务初步沟通</p>",
+    "latestProgressHtml": "<p>已与财务初步沟通</p>"
+  }
+}

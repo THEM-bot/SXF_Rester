@@ -1,0 +1,11 @@
+{
+  "code": 200,
+  "message": "操作成功",
+  "success": true,
+  "data": {
+    "id": "PRB-20261016-0001",
+    "problemNo": "PRB-20261016-0001",
+    "woNo": "WO202610160001",
+    "shareUrl": "http://localhost:5173/app/ops/problem-tickets?id=PRB-20261016-0001"
+  }
+}

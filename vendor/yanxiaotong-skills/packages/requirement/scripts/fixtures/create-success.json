@@ -1,0 +1,10 @@
+{
+  "success": true,
+  "code": 200,
+  "message": "ok",
+  "data": {
+    "requirementId": 1001,
+    "requirementNo": "REQ-TEST-001",
+    "mappingKey": "REQ-TEST-001"
+  }
+}

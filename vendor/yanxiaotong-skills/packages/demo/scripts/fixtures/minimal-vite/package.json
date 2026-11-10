@@ -1,0 +1,9 @@
+{
+  "name": "yanxiaotong-demo-fixture-minimal",
+  "private": true,
+  "scripts": {
+    "build": "vite build",
+    "build:mock": "vite build --mode mock",
+    "lint": "echo lint-ok"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "id": "g2",
+  "track": "content_refine",
+  "source_excerpt": "1. 验收迭代18的需求 2. 处理PMO关键项目阻塞点",
+  "expected_title_max_len": 40,
+  "expected_title_contains": ["验收", "阻塞"],
+  "expected_description_sections": ["工作范围"]
+}

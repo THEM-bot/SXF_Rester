@@ -1,0 +1,22 @@
+{
+  "success": true,
+  "code": 200,
+  "data": {
+    "defectId": "2001",
+    "defectNo": "TD-20260704-0001",
+    "title": "登录按钮无响应",
+    "status": "新建",
+    "severity": "C类（一般）",
+    "discoveryPhase": "开发中",
+    "defectType": "5",
+    "defectTypeLabel": "编码问题",
+    "requirementId": "4174",
+    "requirementNo": "REQ-20260703-001",
+    "requirementTitle": "登录优化",
+    "iterationName": "迭代18",
+    "assigneeName": "张三",
+    "regressionTesterName": "李四",
+    "creatorName": "王五",
+    "creatorNumber": "E003"
+  }
+}

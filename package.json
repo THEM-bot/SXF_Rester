@@ -12,6 +12,7 @@
   "files": [
     "lib/",
     "tools/",
+    "codex/",
     "vendor/",
     "SKILL.md",
     "agents/",
